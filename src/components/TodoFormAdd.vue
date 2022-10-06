@@ -42,17 +42,33 @@ export default {
     data() {
         return {
             title: '',
-            adicionado: false
+            adicionado: false,
+            id: 1
         }
     },
     methods: {
         addTodo() {
+            const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
+            console.log(todos);
+            if (todos.length === 0) {
+                this.id = 1;
+            } else {
+                const aIds = []
+                todos.forEach(element => {
+                    aIds.push(element.id)
+                });
+
+                this.id = aIds.reduce((prev, cur) => {
+                    return prev > cur ? prev : cur;
+                }) + 1
+            }
             if (!this.title) {
                 return false;
             }
             this.$store.dispatch('addTodo', {
                 title: this.title,
-                completed: false
+                completed: false,
+                id: this.id
             }).finally(() => {
                 this.title = ''
                 this.adicionado = true
@@ -64,7 +80,7 @@ export default {
             setTimeout(() => {
                 this.adicionado = false
             }, 1500)
-        }
+        },
     }
 }
 </script>

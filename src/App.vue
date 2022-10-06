@@ -53,11 +53,14 @@ export default {
     this.loading = true
     this.$store.dispatch('getTodos').finally(() => {
       this.loading = false
-      this.todosLengthOriginal = this.$store.state.todos.length;
+      this.todosLengthOriginal = this.$store.state.todos ? this.$store.state.todos.length : 0
     })
   },
   updated() {
-    this.todosLength = this.$store.state.todos.length;
+    this.$store.dispatch('getTodos').finally(() => {
+      this.loading = false
+    })
+    this.todosLength = this.$store.state.todos ? this.$store.state.todos.length : 0;
     if (this.todosLength < this.todosLengthOriginal) {
       if (this.removido) {
         return

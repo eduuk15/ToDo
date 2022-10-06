@@ -1,4 +1,4 @@
-import axios from 'axios'
+
 import { createStore } from 'vuex'
 
 export default createStore({
@@ -29,25 +29,37 @@ export default createStore({
   },
   actions: {
     getTodos({ commit }) {
-      return axios.get('https://my-json-server.typicode.com/eduuk15/ToDo/todos')
-        .then((response) => {
-          commit('storeTodos', response.data)
-        })
+      const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
+      commit('storeTodos', todos)
     },
     addTodo({ commit }, data) {
-      return axios.post('https://my-json-server.typicode.com/eduuk15/ToDo/todos', data).then((response) => {
-        commit('storeTodo', response.data);
-      })
+      const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
+      localStorage.setItem('todos', JSON.stringify([...todos, data]))
+      commit('storeTodos', todos)
     },
     updateTodo({ commit }, { id, data}) {
-      return axios.put(`https://my-json-server.typicode.com/eduuk15/ToDo/todos/${id}`, data).then((response) => {
-      commit('storeTodo', response.data)
-      })
+      const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
+      const todoFiltrada = todos.filter((todo) => {
+        return todo.id === id
+      })[0]
+      todoFiltrada.title = data.title
+      todos.splice(todos.indexOf(todoFiltrada), 1, todoFiltrada);
+      console.log(todos);
+      localStorage.removeItem('todos')
+      localStorage.setItem('todos', JSON.stringify(todos))
+      console.log(localStorage);
+      commit('storeTodo', todos)
     },
     deleteTodo({ commit }, id) {
-      return axios.delete(`https://my-json-server.typicode.com/eduuk15/ToDo/todos/${id}`).then(() => {
-        commit('deleteTodo', id)
-      })
+      const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
+      const todoFiltrada = todos.filter((todo) => {
+        return todo.id === id
+      })[0]
+      todos.splice(todos.indexOf(todoFiltrada), 1);
+
+      localStorage.removeItem('todos')
+      localStorage.setItem('todos', JSON.stringify(todos))
+      commit('storeTodos', todos)
     }
   },
   modules: {
