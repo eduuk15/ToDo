@@ -28,7 +28,11 @@ export default createStore({
     }
   },
   actions: {
-    getTodos({ commit }) {
+    getTodosCreated({ commit }) {
+      const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
+      commit('storeTodos', todos)
+    },
+    getTodosComputed({ commit }) {
       const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
       commit('storeTodos', todos)
     },
