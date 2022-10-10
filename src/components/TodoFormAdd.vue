@@ -49,7 +49,6 @@ export default {
     methods: {
         addTodo() {
             const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
-            console.log(todos);
             if (todos.length === 0) {
                 this.id = 1;
             } else {

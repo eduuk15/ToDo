@@ -34,21 +34,19 @@ export default createStore({
     },
     addTodo({ commit }, data) {
       const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
-      localStorage.setItem('todos', JSON.stringify([...todos, data]))
+      localStorage.setItem('todos', JSON.stringify([data, ...todos ]))
       commit('storeTodos', todos)
     },
-    updateTodo({ commit }, { id, data}) {
+    // eslint-disable-next-line no-empty-pattern
+    updateTodo({}, {id, data}) {
       const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
-      const todoFiltrada = todos.filter((todo) => {
-        return todo.id === id
-      })[0]
-      todoFiltrada.title = data.title
-      todos.splice(todos.indexOf(todoFiltrada), 1, todoFiltrada);
-      console.log(todos);
-      localStorage.removeItem('todos')
-      localStorage.setItem('todos', JSON.stringify(todos))
-      console.log(localStorage);
-      commit('storeTodo', todos)
+      const newTodos = todos.map((todo) => {
+        if (todo.id == id){
+          todo = {id, ...data}
+        }
+        return todo
+      })
+      localStorage.setItem('todos', JSON.stringify(newTodos))
     },
     deleteTodo({ commit }, id) {
       const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
