@@ -1,6 +1,6 @@
 
 import { createStore } from 'vuex'
-let entrou = 1
+let gets = 1
 
 export default createStore({
   state: {
@@ -30,13 +30,13 @@ export default createStore({
   },
   actions: {
     getTodos({ commit }) {
-      entrou += 1
-      if (entrou == 2) {
+      gets += 1
+      if (gets == 2) {
         const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
         commit('storeTodos', todos)
-        entrou++
+        gets++
       } else {
-        entrou = 1
+        gets = 1
       }
     },
     addTodo({ commit }, data) {
