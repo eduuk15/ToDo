@@ -1,4 +1,6 @@
-# to-do-list
+# To Do
+
+Gerenciador de tarefas que utiliza a localStorage do browser para armazenar e persistir os dados
 
 ## Project setup
 ```
