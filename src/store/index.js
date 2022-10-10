@@ -1,5 +1,6 @@
 
 import { createStore } from 'vuex'
+let entrou = 1
 
 export default createStore({
   state: {
@@ -28,17 +29,19 @@ export default createStore({
     }
   },
   actions: {
-    getTodosCreated({ commit }) {
-      const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
-      commit('storeTodos', todos)
-    },
-    getTodosComputed({ commit }) {
-      const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
-      commit('storeTodos', todos)
+    getTodos({ commit }) {
+      entrou += 1
+      if (entrou == 2) {
+        const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
+        commit('storeTodos', todos)
+        entrou++
+      } else {
+        entrou = 1
+      }
     },
     addTodo({ commit }, data) {
       const todos = JSON.parse(localStorage.getItem('todos') ?? '[]')
-      localStorage.setItem('todos', JSON.stringify([data, ...todos ]))
+      localStorage.setItem('todos', JSON.stringify([data, ...todos]))
       commit('storeTodos', todos)
     },
     // eslint-disable-next-line no-empty-pattern

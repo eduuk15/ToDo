@@ -46,18 +46,21 @@ export default {
       loading: false,
       removido: false,
       todosLengthOriginal: '',
-      todosLength: ''
+      todosLength: '',
+      created: false
     }
   },
   created() {
     this.loading = true
-    this.$store.dispatch('getTodosCreated').finally(() => {
+    this.$store.dispatch('getTodos').finally(() => {
       this.loading = false
       this.todosLengthOriginal = this.$store.state.todos ? this.$store.state.todos.length : 0
     })
   },
-  computed() {
-    this.$store.dispatch('getTodosComputed')
+  updated() {
+    this.$store.dispatch('getTodos').finally(() => {
+      this.loading = false
+    })
     this.todosLength = this.$store.state.todos ? this.$store.state.todos.length : 0;
     if (this.todosLength < this.todosLengthOriginal) {
       if (this.removido) {
